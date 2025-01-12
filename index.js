@@ -1,4 +1,3 @@
-const availablePlacement = 10;
 const officialPlacementOrder = [
 	'Président de la République',
 	'Premier ministre',
@@ -65,8 +64,10 @@ const officialPlacementOrder = [
 
 printInputs();
 document.getElementById('generateButton').addEventListener('click', () => {
-	const presentPeoples = getPresentPeoples();
-	renderPlacements(presentPeoples);
+	renderPlacements();
+});
+document.getElementById('availablePlacement').addEventListener('input', () => {
+	renderPlacements()
 });
 
 function printInputs() {
@@ -98,7 +99,9 @@ function printInputs() {
 	});
 	inputTable.appendChild(tbody);
 }
-function renderPlacements(presentPeoples) {
+function renderPlacements() {
+		const presentPeoples = getPresentPeoples();
+		const availablePlacement = document.getElementById('availablePlacement').value;
     const renderDiv = document.getElementById('renderPlacements');
     let placementNumber = 0;
 
@@ -114,8 +117,6 @@ function renderPlacements(presentPeoples) {
         peopleCase.classList.add('people-case');
 
         const rowNumber = Math.floor(placementNumber / 5) + 1;
-        console.log(i);
-        console.log('rownumber' + rowNumber);
         peopleCase.style.gridRow = rowNumber;
 
         renderDiv.appendChild(peopleCase);
