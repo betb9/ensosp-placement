@@ -64,7 +64,10 @@ const officialPlacementOrder = [
 ];
 
 printInputs();
-renderPlacements();
+document.getElementById('generateButton').addEventListener('click', () => {
+	const presentPeoples = getPresentPeoples();
+	renderPlacements(presentPeoples);
+});
 
 function printInputs() {
 	const inputTable = document.getElementById('peopleInputs');
@@ -95,12 +98,12 @@ function printInputs() {
 	});
 	inputTable.appendChild(tbody);
 }
-function renderPlacements() {
+function renderPlacements(presentPeoples) {
     const renderDiv = document.getElementById('renderPlacements');
     let placementNumber = 0;
 
     renderDiv.innerHTML = '';
-    for (const [i, people] of peoples.entries()) {
+    for (const [i, people] of presentPeoples.entries()) {
         if (people === '') {
             continue;
         }
@@ -122,4 +125,16 @@ function renderPlacements() {
             break;
         }
     }
+}
+function getPresentPeoples() {
+	const presentPeoples = [];
+	const inputs = document.querySelectorAll(`input[id^="ìnput-"]`);
+
+	inputs.forEach(input => {
+		if (input.value.trim() !== '') {
+			presentPeoples.push(input.value.trim());
+		}
+	});
+
+	return presentPeoples;
 }
