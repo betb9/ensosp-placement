@@ -113,10 +113,8 @@ document.getElementById('placementLocation').addEventListener('input', event => 
 });
 
 function printInputs() {
-	const inputTable = document.getElementById('peopleInputs');
+	const inputTable = document.getElementById('peopleInputs').getElementsByTagName('tbody')[0];
 	inputTable.innerHTML = '';
-
-	const tbody = document.createElement('tbody');
 
 	const placementOrderList = getPlacementOrderList();
 
@@ -126,24 +124,36 @@ function printInputs() {
 		const labelColumn = document.createElement('td');
 		const label = document.createElement('label');
 		label.className = 'form-label'
-		label.htmlFor = `ìnput-${index}`;
+		label.htmlFor = `ìnput-name-${index}`;
 		label.textContent = value;
 		labelColumn.appendChild(label);
 
-		const inputColumn = document.createElement('td');
-		inputColumn.className = 'col w-25';
-		const input = document.createElement('input');
-		input.id = `ìnput-${index}`;
-		input.type = 'text';
-		input.className = 'form-control';
-		inputColumn.appendChild(input);
+		const inputNameColumn = document.createElement('td');
+		inputNameColumn.className = 'col w-25';
+		const inputName = document.createElement('input');
+		inputName.id = `ìnput-name-${index}`;
+		inputName.type = 'text';
+		inputName.className = 'form-control';
+		inputName.dataset.id = index;
+		inputName.dataset.type = 'name';
+		inputNameColumn.appendChild(inputName);
+
+		const inputFunctionColumn = document.createElement('td');
+		inputFunctionColumn.className = 'col w-25';
+		const inputFunction = document.createElement('input');
+		inputFunction.id = `input-function-${index}`;
+		inputFunction.type = 'text';
+		inputFunction.className = 'form-control';
+		inputFunction.dataset.id = index;
+		inputFunction.dataset.type = 'function';
+		inputFunctionColumn.appendChild(inputFunction);
 
 		row.appendChild(labelColumn);
-		row.appendChild(inputColumn);
+		row.appendChild(inputNameColumn);
+		row.appendChild(inputFunctionColumn);
 
-		tbody.appendChild(row)
+		inputTable.appendChild(row)
 	});
-	inputTable.appendChild(tbody);
 }
 function renderPlacements() {
 		const presentPeoples = getPresentPeoples();
@@ -152,35 +162,46 @@ function renderPlacements() {
     let placementNumber = 0;
 
     renderDiv.innerHTML = '';
-    for (const [i, people] of presentPeoples.entries()) {
-        if (people === '') {
+    for (const people in presentPeoples) {
+			if (people === '') {
             continue;
         }
 
-        const peopleCase = document.createElement('div');
-        peopleCase.id = 'people-case-' + placementNumber;
-        peopleCase.textContent = people;
-        peopleCase.classList.add('people-case');
+			const peopleCase = document.createElement('div');
+			peopleCase.id = 'people-case-' + placementNumber;
+			peopleCase.innerHTML = `<span class="people-name">${presentPeoples[people].name}</span><br><span class="people-function">${presentPeoples[people].function}</span>`;
+			peopleCase.classList.add('people-case');
 
-        const rowNumber = Math.floor(placementNumber / 5) + 1;
-        peopleCase.style.gridRow = rowNumber;
+			const rowNumber = Math.floor(placementNumber / 5) + 1;
+			peopleCase.style.gridRow = rowNumber;
 
-        renderDiv.appendChild(peopleCase);
+			renderDiv.appendChild(peopleCase);
 
-        placementNumber++;
-        if (placementNumber >= availablePlacement) {
+			placementNumber++;
+			if (placementNumber >= availablePlacement) {
             break;
         }
     }
 }
 function getPresentPeoples() {
-	const presentPeoples = [];
-	const inputs = document.querySelectorAll(`input[id^="ìnput-"]`);
+	const presentPeoples = {};
+	let presentPeoplesNumber = 0;
 
-	inputs.forEach(input => {
-		if (input.value.trim() !== '') {
-			presentPeoples.push(input.value.trim());
+	const inputsNames = document.querySelectorAll(`input[id^="ìnput-name-"]`);
+
+	inputsNames.forEach((input, index) => {
+
+		if (input.value.trim() === '') {
+			return;
 		}
+
+		const peopleFunction = document.querySelector(`input[data-id="${index}"][data-type="function"]`);
+
+		presentPeoples[presentPeoplesNumber] = {
+			'name': input.value.trim(),
+			'function': peopleFunction.value.trim()
+		};
+		presentPeoplesNumber++
 	});
 
 	return presentPeoples;

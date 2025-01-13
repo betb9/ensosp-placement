@@ -30,3 +30,10 @@
 .people-case:nth-child(5n+5) {
     grid-column: 1;
 }
+
+.people-name {
+	font-weight: bold;
+}
+.people-function {
+	font-style: italic;
+}
