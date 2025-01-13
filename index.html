@@ -10,8 +10,24 @@
 <body>
 <main class="container-fluid text-center">
 	<h1>Ordre de Préséance de Cérémonie</h1>
-	<label for="availablePlacement">Nombre de personnes:</label> <input type="number" id="availablePlacement" placeholder="10" value="10">
-	<button id="generateButton" type="button" class="btn btn-outline-secondary">Générer</button>
+
+	<div class="container">
+		<div class="row m-5">
+			<div class="col">
+				<select id="placementLocation" class="form-select">
+					<option value="department" selected>Département</option>
+					<option value="paris">Paris</option>
+				</select>
+			</div>
+			<div class="col">
+				<label for="availablePlacement">Nombre de personnes:</label> <input type="number" id="availablePlacement" placeholder="10" value="10">
+			</div>
+			<div class="col">
+				<button id="generateButton" type="button" class="btn btn-outline-secondary">Générer</button>
+			</div>
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col">
 			<table id="peopleInputs" class="table table-striped table-hover"></table>
