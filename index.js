@@ -94,6 +94,10 @@ const departmentPlacementOrder = [
 	"Les présidents des associations d'anciens combattants et victimes de guerre",
 	"Les représentants des cultes"
 ];
+const ensospRequiredPlacement = [
+	"Autorité Présidente",
+	"Directeur de l’ENSOSP"
+];
 const placementOrders = {
 	parisPlacementOrder,
 	departmentPlacementOrder
@@ -208,5 +212,5 @@ function getPresentPeoples() {
 }
 function getPlacementOrderList() {
 	const placementName = `${currentLocationOrderType}PlacementOrder`;
-	return placementOrders[placementName];
+	return [...ensospRequiredPlacement, ...placementOrders[placementName]];
 }
